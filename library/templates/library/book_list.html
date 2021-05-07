@@ -1,0 +1,36 @@
+{% extends "library/base_bootstrap.html" %}
+{% block content %}
+<div style="float:right">
+<!-- https://www.w3schools.com/howto/howto_css_search_button.asp -->
+<form>
+  <input type="text" placeholder="Search.." name="search"
+  {% if search %} value="{{ search }}" {% endif %}
+  >
+  <button id="search" type="submit"><i class="fa fa-search">search</i></button>
+<a href="{% url 'library:all' %}"><i class="fa fa-undo"></i></a>
+</form>
+</div>
+  <p id="welcome">Welcome to <em>BookLibrary</em>, a very basic Django website </p>
+<p>
+{% if book_list %}
+<ul class="main">
+  {% for book in book_list %}
+    <li>
+        <a href="{% url 'library:book_detail'  book.id %}">{{ book.title }}</a>
+        {% if book.owner == user %}
+        (<a href="{% url 'library:book_update' book.id %}">Edit</a> |
+        <a href="{% url 'library:book_delete' book.id %}">Delete</a>|
+        <a href="{% url 'res_api:gudb' book.id %}">Api</a>)
+
+        {% endif %}
+    </li>
+            <hr>
+
+  {% endfor %}
+</ul>
+{% else %}
+  <p>There are no books in the database.</p>
+{% endif %}
+</p>
+
+{% endblock %}
